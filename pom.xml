@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>dumpling</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <packaging>hpi</packaging>
   <name>Use dumpling from Jenkins groovy scripts</name>
   <url>http://wiki.jenkins-ci.org/display/JENKINS/Dumpling+plugin</url>
@@ -17,6 +17,7 @@
     <connection>scm:git:git://github.com/jenkinsci/dumpling-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/dumpling-plugin.git</developerConnection>
     <url>http://github.com/jenkinsci/dumpling-plugin</url>
+    <tag>dumpling-0.1</tag>
   </scm>
 
   <dependencies>
