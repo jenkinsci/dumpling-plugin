@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package hudson.model;
+package jenkins.model;
 
 import hudson.Extension;
 import hudson.Plugin;
@@ -35,7 +35,7 @@ import com.github.olivergondza.dumpling.model.ProcessRuntime;
 /**
  * Entry point for Dumpling DSL.
  *
- * In hudson.model package so it will be available without explicit imports in most groovy scripts.
+ * In jenkins.model package so it will be available without explicit imports in most groovy scripts.
  *
  * @author ogondza
  */
