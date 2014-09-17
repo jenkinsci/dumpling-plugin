@@ -4,10 +4,8 @@ Dumpling plugin for Jenkins brings [Dumpling DSL](https://github.com/olivergondz
 
 It can be used as an API plugin used by other plugin interested in Jenkins thread monitoring or most importantly, from groovy scripts.
 
-Plugin exposes `jenkins.model.Dumpling` class to facilitate access from scripts. Install plugin and use dumpling as easily as:
+Plugin exposes `Dumpling` class to facilitate access from scripts. Install plugin and use dumpling as easily as:
 
 
     Dumpling.runtime.threads.grep { it.name.startsWith('Executor') }
 
-
-(Unfortunately, `jenkins.model.*` is not preimported consistently so one might need to use `jenkins.model.Dumpling` instead)
