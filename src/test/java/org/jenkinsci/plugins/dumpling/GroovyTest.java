@@ -21,31 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package jenkins.model;
+package org.jenkinsci.plugins.dumpling;
 
-import hudson.Extension;
-import hudson.Plugin;
+import static org.junit.Assert.assertTrue;
+import hudson.slaves.DumbSlave;
+import hudson.util.RemotingDiagnostics;
+import jenkins.model.Jenkins.MasterComputer;
 
-import org.kohsuke.accmod.Restricted;
-import org.kohsuke.accmod.restrictions.DoNotUse;
+import org.junit.Rule;
+import org.junit.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 
-import com.github.olivergondza.dumpling.factory.JvmRuntimeFactory;
-import com.github.olivergondza.dumpling.model.ProcessRuntime;
+public class GroovyTest {
 
-/**
- * Entry point for Dumpling DSL.
- *
- * In jenkins.model package so it will be available without explicit imports in most groovy scripts.
- *
- * @author ogondza
- */
-@Extension
-@Restricted(DoNotUse.class) // Not an API
-public class Dumpling extends Plugin {
+    @Rule public JenkinsRule j = new JenkinsRule();
 
-    private static JvmRuntimeFactory factory = new JvmRuntimeFactory();
+    @Test
+    public void master() throws Exception {
+        String threads = RemotingDiagnostics.executeGroovy("Dumpling.runtime.threads", MasterComputer.localChannel);
 
-    public static ProcessRuntime getRuntime() {
-        return factory.currentRuntime();
+        assertTrue(threads, threads.contains("Executor #0 for master"));
+    }
+
+    @Test
+    public void slave() throws Exception {
+        DumbSlave slave = j.createOnlineSlave();
+        String threads = RemotingDiagnostics.executeGroovy("Dumpling.runtime.threads", slave.getChannel());
+
+        assertTrue(threads, threads.contains("Pipe writer thread: channel"));
     }
 }
