@@ -21,7 +21,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.github.olivergondza.dumpling</groupId>
+      <groupId>com.github.olivergondza</groupId>
       <artifactId>dumpling</artifactId>
       <version>0.1-SNAPSHOT</version>
     </dependency>
@@ -37,6 +37,13 @@
     <repository>
       <id>repo.jenkins-ci.org</id>
       <url>http://repo.jenkins-ci.org/public/</url>
+    </repository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
     </repository>
   </repositories>
 
