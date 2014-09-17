@@ -26,17 +26,21 @@ package hudson.model;
 import hudson.Extension;
 import hudson.Plugin;
 
+import org.kohsuke.accmod.Restricted;
+import org.kohsuke.accmod.restrictions.DoNotUse;
+
 import com.github.olivergondza.dumpling.factory.JvmRuntimeFactory;
 import com.github.olivergondza.dumpling.model.ProcessRuntime;
 
 /**
- * Entry point for Dumpling dsl.
+ * Entry point for Dumpling DSL.
  *
- * In hudson.model package so it will be available without explicit imports.
+ * In hudson.model package so it will be available without explicit imports in most groovy scripts.
  *
  * @author ogondza
  */
 @Extension
+@Restricted(DoNotUse.class) // Not an API
 public class Dumpling extends Plugin {
 
     private static JvmRuntimeFactory factory = new JvmRuntimeFactory();
