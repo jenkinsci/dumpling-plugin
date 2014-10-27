@@ -20,11 +20,16 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <dumpling.version>0.2</dumpling.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.github.olivergondza</groupId>
       <artifactId>dumpling</artifactId>
-      <version>0.2</version>
+      <version>${dumpling.version}</version>
     </dependency>
     <!-- -->
     <dependency>
