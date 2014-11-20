@@ -10,7 +10,7 @@
   <artifactId>dumpling</artifactId>
   <version>0.3-SNAPSHOT</version>
   <packaging>hpi</packaging>
-  <name>Use dumpling from Jenkins groovy scripts</name>
+  <name>Use Dumpling from Jenkins groovy scripts</name>
   <url>http://wiki.jenkins-ci.org/display/JENKINS/Dumpling+plugin</url>
 
   <scm>
@@ -21,7 +21,7 @@
   </scm>
 
   <properties>
-    <dumpling.version>0.2</dumpling.version>
+    <dumpling.version>0.3</dumpling.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
