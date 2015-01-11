@@ -54,7 +54,7 @@ public class ReferenceLink implements RootAction {
     }
 
     public String getUrlName() {
-        return !isApplicable() ? null : "https://olivergondza.github.io/dumpling/refdoc/dumpling-0.2/";
+        return !isApplicable() ? null : "https://olivergondza.github.io/dumpling/refdoc/";
     }
 
     private boolean isApplicable() {
