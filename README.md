@@ -9,3 +9,4 @@ Plugin exposes `Dumpling` class to facilitate access from scripts. Install plugi
 
     Dumpling.runtime.threads.grep { it.name.startsWith('Executor') }
 
+More useful scripts on [wiki](https://wiki.jenkins-ci.org/display/JENKINS/Dumpling+Plugin#DumplingPlugin-Usefulscripts).
