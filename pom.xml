@@ -21,7 +21,7 @@
   </scm>
 
   <properties>
-    <dumpling.version>0.5</dumpling.version>
+    <dumpling.version>0.6</dumpling.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
