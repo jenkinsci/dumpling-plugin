@@ -38,16 +38,20 @@ public class GroovyTest {
 
     @Test
     public void master() throws Exception {
-        String threads = RemotingDiagnostics.executeGroovy("Dumpling.runtime.threads", MasterComputer.localChannel);
+        String out = RemotingDiagnostics.executeGroovy("Dumpling.runtime.threads", MasterComputer.localChannel);
+        assertTrue(out, out.contains("Executor #0 for master"));
 
-        assertTrue(threads, threads.contains("Executor #0 for master"));
+        out = RemotingDiagnostics.executeGroovy("Dumpling.runtime.threads.grep().getClass()", MasterComputer.localChannel);
+        assertTrue(out, out.contains("JvmThreadSet"));
     }
 
     @Test
     public void slave() throws Exception {
         DumbSlave slave = j.createOnlineSlave();
-        String threads = RemotingDiagnostics.executeGroovy("Dumpling.runtime.threads", slave.getChannel());
+        String out = RemotingDiagnostics.executeGroovy("Dumpling.runtime.threads", slave.getChannel());
+        assertTrue(out, out.contains("Pipe writer thread: channel"));
 
-        assertTrue(threads, threads.contains("Pipe writer thread: channel"));
+        out = RemotingDiagnostics.executeGroovy("Dumpling.runtime.threads.grep().getClass()", slave.getChannel());
+        assertTrue(out, out.contains("JvmThreadSet"));
     }
 }

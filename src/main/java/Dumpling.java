@@ -28,7 +28,8 @@ import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.DoNotUse;
 
 import com.github.olivergondza.dumpling.factory.JvmRuntimeFactory;
-import com.github.olivergondza.dumpling.model.ProcessRuntime;
+import com.github.olivergondza.dumpling.groovy.GroovyInterpretterConfig;
+import com.github.olivergondza.dumpling.model.jvm.JvmRuntime;
 
 /**
  * Entry point for Dumpling DSL.
@@ -41,9 +42,13 @@ import com.github.olivergondza.dumpling.model.ProcessRuntime;
 @Restricted(DoNotUse.class) // Not an API
 public class Dumpling extends Plugin {
 
+    static {
+        new GroovyInterpretterConfig().setupDecorateMethods();
+    }
+
     private static JvmRuntimeFactory factory = new JvmRuntimeFactory();
 
-    public static ProcessRuntime getRuntime() {
+    public static JvmRuntime getRuntime() {
         return factory.currentRuntime();
     }
 }

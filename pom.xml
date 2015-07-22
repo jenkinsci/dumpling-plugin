@@ -20,14 +20,19 @@
   </scm>
 
   <properties>
-    <dumpling.version>1.0</dumpling.version>
+    <dumpling.version>2.0-SNAPSHOT</dumpling.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>
     <dependency>
-      <groupId>com.github.olivergondza</groupId>
+      <groupId>com.github.olivergondza.dumpling</groupId>
       <artifactId>dumpling</artifactId>
+      <version>${dumpling.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.olivergondza.dumpling</groupId>
+      <artifactId>dumpling-groovy-api</artifactId>
       <version>${dumpling.version}</version>
     </dependency>
     <dependency>
