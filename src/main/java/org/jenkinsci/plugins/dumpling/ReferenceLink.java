@@ -50,11 +50,11 @@ public class ReferenceLink implements RootAction {
     }
 
     public String getDisplayName() {
-        return !isApplicable() ? null : "Dumpling reference";
+        return !isApplicable() ? null : "Dumpling help";
     }
 
     public String getUrlName() {
-        return !isApplicable() ? null : "https://olivergondza.github.io/dumpling/refdoc/";
+        return !isApplicable() ? null : "https://wiki.jenkins-ci.org/display/JENKINS/Dumpling+Plugin";
     }
 
     private boolean isApplicable() {
