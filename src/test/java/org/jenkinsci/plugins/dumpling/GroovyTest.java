@@ -23,7 +23,12 @@
  */
 package org.jenkinsci.plugins.dumpling;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import com.github.olivergondza.dumpling.factory.ThreadDumpFactory;
+import com.github.olivergondza.dumpling.model.ProcessThread;
+import com.github.olivergondza.dumpling.model.dump.ThreadDumpThreadSet;
 import hudson.slaves.DumbSlave;
 import hudson.util.RemotingDiagnostics;
 import jenkins.model.Jenkins.MasterComputer;
@@ -38,8 +43,9 @@ public class GroovyTest {
 
     @Test
     public void master() throws Exception {
-        String out = RemotingDiagnostics.executeGroovy("Dumpling.runtime.threads", MasterComputer.localChannel);
-        assertTrue(out, out.contains("Executor #0 for master"));
+        String out = RemotingDiagnostics.executeGroovy("Thread.start('fixture_thread_master') { println Dumpling.runtime.threads }.join()", MasterComputer.localChannel);
+        ThreadDumpThreadSet threads = new ThreadDumpFactory().fromString(out).getThreads().where(ProcessThread.nameIs("fixture_thread_master"));
+        assertEquals(out, 1, threads.size());
 
         out = RemotingDiagnostics.executeGroovy("Dumpling.runtime.threads.grep().getClass()", MasterComputer.localChannel);
         assertTrue(out, out.contains("JvmThreadSet"));
@@ -48,8 +54,9 @@ public class GroovyTest {
     @Test
     public void slave() throws Exception {
         DumbSlave slave = j.createOnlineSlave();
-        String out = RemotingDiagnostics.executeGroovy("Dumpling.runtime.threads", slave.getChannel());
-        assertTrue(out, out.contains("Pipe writer thread: channel"));
+        String out = RemotingDiagnostics.executeGroovy("Thread.start('fixture_thread_slave') { println Dumpling.runtime.threads }.join()", slave.getChannel());
+        ThreadDumpThreadSet threads = new ThreadDumpFactory().fromString(out).getThreads().where(ProcessThread.nameIs("fixture_thread_slave"));
+        assertEquals(out, 1, threads.size());
 
         out = RemotingDiagnostics.executeGroovy("Dumpling.runtime.threads.grep().getClass()", slave.getChannel());
         assertTrue(out, out.contains("JvmThreadSet"));
