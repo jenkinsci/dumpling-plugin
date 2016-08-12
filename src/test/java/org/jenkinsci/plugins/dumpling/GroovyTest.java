@@ -23,42 +23,89 @@
  */
 package org.jenkinsci.plugins.dumpling;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.isEmptyString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import com.github.olivergondza.dumpling.factory.ThreadDumpFactory;
 import com.github.olivergondza.dumpling.model.ProcessThread;
 import com.github.olivergondza.dumpling.model.dump.ThreadDumpThreadSet;
+import hudson.model.Node;
 import hudson.slaves.DumbSlave;
 import hudson.util.RemotingDiagnostics;
+import jenkins.model.Jenkins;
 import jenkins.model.Jenkins.MasterComputer;
 
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.theories.DataPoint;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 import org.jvnet.hudson.test.JenkinsRule;
 
+import java.io.IOException;
+
+@RunWith(Theories.class)
 public class GroovyTest {
 
-    @Rule public JenkinsRule j = new JenkinsRule();
+    @ClassRule
+    public static JenkinsRule j = new JenkinsRule();
 
-    @Test
-    public void master() throws Exception {
-        String out = RemotingDiagnostics.executeGroovy("Thread.start('fixture_thread_master') { println Dumpling.runtime.threads }.join()", MasterComputer.localChannel);
-        ThreadDumpThreadSet threads = new ThreadDumpFactory().fromString(out).getThreads().where(ProcessThread.nameIs("fixture_thread_master"));
-        assertEquals(out, 1, threads.size());
-
-        out = RemotingDiagnostics.executeGroovy("Dumpling.runtime.threads.grep().getClass()", MasterComputer.localChannel);
-        assertTrue(out, out.contains("JvmThreadSet"));
+    @DataPoints
+    public static Node[] getNodes() throws Exception {
+        return new Node[] {
+                j.jenkins, j.createOnlineSlave()
+        };
     }
 
-    @Test
-    public void slave() throws Exception {
-        DumbSlave slave = j.createOnlineSlave();
-        String out = RemotingDiagnostics.executeGroovy("Thread.start('fixture_thread_slave') { println Dumpling.runtime.threads }.join()", slave.getChannel());
-        ThreadDumpThreadSet threads = new ThreadDumpFactory().fromString(out).getThreads().where(ProcessThread.nameIs("fixture_thread_slave"));
+    @DataPoints
+    public static String[] getAccessors() throws Exception {
+        return new String[] {
+                "Dumpling", "D"
+        };
+    }
+
+    @Theory
+    public void getCurrentRuntime(Node node, String accessor) throws Exception {
+        String out = run(node, "Thread.start('fixture_thread_" + name(node) + "') { println " + accessor + ".runtime.threads }.join()");
+        ThreadDumpThreadSet threads = new ThreadDumpFactory().fromString(out).getThreads().where(ProcessThread.nameIs("fixture_thread_" + name(node)));
         assertEquals(out, 1, threads.size());
 
-        out = RemotingDiagnostics.executeGroovy("Dumpling.runtime.threads.grep().getClass()", slave.getChannel());
-        assertTrue(out, out.contains("JvmThreadSet"));
+        assertThat(
+                run(node, "print " + accessor + ".runtime.threads.grep().getClass().name"),
+                equalTo("com.github.olivergondza.dumpling.model.jvm.JvmThreadSet")
+        );
+    }
+
+    @Theory
+    public void argsAreEmpty(Node node, String accessor) throws Exception {
+        assertEquals("0", run(node, "print " + accessor + ".getArgs().size()"));
+        assertEquals("0", run(node, "print " + accessor + ".args.size()"));
+    }
+
+    @Theory
+    public void loadJvm(Node node, String accessor) throws Exception {
+        assertThat(
+                run(node, "print " + accessor + ".load.jvm.threads.grep().getClass().name"),
+                equalTo("com.github.olivergondza.dumpling.model.jvm.JvmThreadSet")
+        );
+    }
+
+    private String run(Node node, String script) throws Exception {
+        System.out.println(script);
+        return RemotingDiagnostics.executeGroovy(script, node.getChannel());
+    }
+
+    private String name(Node node) {
+        return node instanceof Jenkins
+                ? "master"
+                : node.getDisplayName()
+        ;
     }
 }

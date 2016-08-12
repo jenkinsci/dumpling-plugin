@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) Red Hat, Inc.
+ * Copyright (c) 2014 Red Hat, Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,29 @@
  */
 
 import com.github.olivergondza.dumpling.groovy.GroovyApiEntryPoint;
+
+import com.github.olivergondza.dumpling.factory.JvmRuntimeFactory;
+import com.github.olivergondza.dumpling.groovy.GroovyInterpretterConfig;
 import com.github.olivergondza.dumpling.model.jvm.JvmRuntime;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
-/*package*/ class Dumpling extends D {
+/**
+ * Entry point for D DSL.
+ *
+ * In default package so it will be available without explicit imports in groovy scripts.
+ *
+ * @author ogondza
+ */
+/*package*/ class D {
+
+    static {
+        new GroovyInterpretterConfig().setupDecorateMethods();
+    }
+
+    protected static final JvmRuntimeFactory factory = new JvmRuntimeFactory();
 
     private static final GroovyApiEntryPoint d = new GroovyApiEntryPoint(Collections.<String>emptyList(), null, "D");
 
@@ -36,11 +53,11 @@ import java.util.List;
         return factory.currentRuntime();
     }
 
-    public static GroovyApiEntryPoint.LoadCommand getLoad() {
+    public static @Nonnull GroovyApiEntryPoint.LoadCommand getLoad() {
         return d.getLoad();
     }
 
-    public static List<String> getArgs() {
+    public static @Nonnull List<String> getArgs() {
         return d.getArgs();
     }
 
