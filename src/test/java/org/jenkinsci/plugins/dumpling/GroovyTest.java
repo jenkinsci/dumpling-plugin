@@ -97,6 +97,14 @@ public class GroovyTest {
         );
     }
 
+    @Theory
+    public void accessQuery(Node node, String accessor) throws Exception {
+        assertThat(
+                run(node, "print " + accessor + ".query.blockingTree().getClass().name"),
+                equalTo("com.github.olivergondza.dumpling.query.BlockingTree")
+        );
+    }
+
     private String run(Node node, String script) throws Exception {
         System.out.println(script);
         return RemotingDiagnostics.executeGroovy(script, node.getChannel());

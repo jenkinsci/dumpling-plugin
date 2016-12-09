@@ -22,6 +22,7 @@
  * THE SOFTWARE.
  */
 
+import com.github.olivergondza.dumpling.groovy.Factories;
 import com.github.olivergondza.dumpling.groovy.GroovyApiEntryPoint;
 
 import com.github.olivergondza.dumpling.factory.JvmRuntimeFactory;
@@ -55,6 +56,13 @@ import java.util.List;
 
     public static @Nonnull GroovyApiEntryPoint.LoadCommand getLoad() {
         return d.getLoad();
+    }
+
+    /**
+     * @return Class to access static methods on non-instantiable class.
+     */
+    public static @Nonnull Class<Factories> getQuery() {
+        return Factories.class;
     }
 
     public static @Nonnull List<String> getArgs() {

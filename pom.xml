@@ -24,7 +24,7 @@
     <jenkins-test-harness.version>2.1</jenkins-test-harness.version>
     <java.level>6</java.level>
 
-    <dumpling.version>2.2-SNAPSHOT</dumpling.version>
+    <dumpling.version>2.2</dumpling.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
